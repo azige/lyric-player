@@ -15,8 +15,6 @@
  */
 package io.github.azige.lrcplayer;
 
-import java.time.LocalTime;
-
 /**
  *
  * @author Azige

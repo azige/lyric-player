@@ -72,8 +72,10 @@ public class LyricPlayer extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lyric Player");
+        setResizable(false);
 
         stopButton.setText("Stop");
+        stopButton.setEnabled(false);
         stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopButtonActionPerformed(evt);
@@ -141,7 +143,7 @@ public class LyricPlayer extends javax.swing.JFrame{
                     .addComponent(timeLineSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalTimeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(stopButton)
                     .addComponent(playToggleButton))
                 .addContainerGap())
@@ -160,7 +162,7 @@ public class LyricPlayer extends javax.swing.JFrame{
 
     private void timeLineSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timeLineSliderMouseReleased
         seek();
-        refreshView(null);
+        refreshView(timeLineSlider.getValue());
         sliderTrace = true;
     }//GEN-LAST:event_timeLineSliderMouseReleased
 
@@ -181,7 +183,7 @@ public class LyricPlayer extends javax.swing.JFrame{
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             File mediaFile = fileChooser.getSelectedFile();
             player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
-            player.setOnStopped(this::stop);
+            player.setOnEndOfMedia(this::stop);
             File lrcFile = new File(mediaFile.getParentFile(), mediaFile.getName().replaceAll("\\.[^\\.]*$", "") + ".lrc");
             if (lrcFile.exists()){
                 try{
@@ -207,12 +209,16 @@ public class LyricPlayer extends javax.swing.JFrame{
         totalTimeLabel.setText(LyricTimeStamp.fromMillis(totalTime).toString());
         timeLineSlider.setMaximum(totalTime);
         timeLineSlider.setEnabled(true);
-        timer = new Timer(10, this::refreshView);
+        timer = new Timer(10, this::timerLisener);
         timer.start();
+        stopButton.setEnabled(true);
     }
 
-    private void refreshView(ActionEvent e){
-        int time = (int)player.getCurrentTime().toMillis();
+    private void timerLisener(ActionEvent e){
+        refreshView((int)player.getCurrentTime().toMillis());
+    }
+
+    private void refreshView(int time){
         timeLine.setTime(time);
         if (sliderTrace == true){
             timeLineSlider.setValue(time);
@@ -235,13 +241,17 @@ public class LyricPlayer extends javax.swing.JFrame{
     }
 
     private void stop(){
-        player.stop();
-        player = null;
         timer.stop();
+        player.dispose();
+        player = null;
         lyricTextArea.setText("");
+        timeLabel.setText("00:00.00");
+        totalTimeLabel.setText("00:00.00");
         timeLineSlider.setMaximum(2);
         timeLineSlider.setValue(1);
         timeLineSlider.setEnabled(false);
+        stopButton.setEnabled(false);
+        playToggleButton.setSelected(false);
     }
 
     private void seek(){
