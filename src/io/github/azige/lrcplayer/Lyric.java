@@ -49,7 +49,11 @@ public class Lyric{
     }
 
     public void setMeta(LyricMetaType key, String value){
-        metaInfoMap.put(key, value);
+        if (value == null){
+            metaInfoMap.remove(key);
+        }else{
+            metaInfoMap.put(key, value);
+        }
     }
 
     public SortedSet<LyricEvent> getEvents(){
