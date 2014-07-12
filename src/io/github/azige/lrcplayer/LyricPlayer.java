@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import javax.swing.JFileChooser;
 import javax.swing.Timer;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -169,8 +171,9 @@ public class LyricPlayer extends javax.swing.JFrame{
     private void playToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playToggleButtonActionPerformed
         if (playToggleButton.isSelected()){
             if (player == null){
-                openMediaFile();
-                play();
+                if (openMediaFile()){
+                    play();
+                }
             }else{
                 resume();
             }
@@ -179,10 +182,16 @@ public class LyricPlayer extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_playToggleButtonActionPerformed
 
-    private void openMediaFile(){
+    private boolean openMediaFile(){
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             File mediaFile = fileChooser.getSelectedFile();
             player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
+            player.setOnReady(() -> {
+                int totalTime = (int)player.getMedia().getDuration().toMillis();
+                totalTimeLabel.setText(LyricTimeStamp.fromMillis(totalTime).toString());
+                timeLineSlider.setMaximum(totalTime);
+                timeLineSlider.setEnabled(true);
+            });
             player.setOnEndOfMedia(this::stop);
             File lrcFile = new File(mediaFile.getParentFile(), mediaFile.getName().replaceAll("\\.[^\\.]*$", "") + ".lrc");
             if (lrcFile.exists()){
@@ -200,15 +209,14 @@ public class LyricPlayer extends javax.swing.JFrame{
             }else{
                 lyricTextArea.setText("歌词不可用");
             }
+            return true;
+        }else{
+            return false;
         }
     }
 
     private void play(){
         player.play();
-        int totalTime = (int)player.getMedia().getDuration().toMillis();
-        totalTimeLabel.setText(LyricTimeStamp.fromMillis(totalTime).toString());
-        timeLineSlider.setMaximum(totalTime);
-        timeLineSlider.setEnabled(true);
         timer = new Timer(10, this::timerLisener);
         timer.start();
         stopButton.setEnabled(true);
@@ -219,14 +227,16 @@ public class LyricPlayer extends javax.swing.JFrame{
     }
 
     private void refreshView(int time){
-        timeLine.setTime(time);
         if (sliderTrace == true){
             timeLineSlider.setValue(time);
         }
         timeLabel.setText(LyricTimeStamp.fromMillis(time).toString());
-        if (currentEvent != timeLine.getCurrentEvent()){
-            currentEvent = timeLine.getCurrentEvent();
-            lyricTextArea.setText(currentEvent.getLyric());
+        if (timeLine != null){
+            timeLine.setTime(time);
+            if (currentEvent != timeLine.getCurrentEvent()){
+                currentEvent = timeLine.getCurrentEvent();
+                lyricTextArea.setText(currentEvent.getLyric());
+            }
         }
     }
 
@@ -244,6 +254,7 @@ public class LyricPlayer extends javax.swing.JFrame{
         timer.stop();
         player.dispose();
         player = null;
+        timeLine = null;
         lyricTextArea.setText("");
         timeLabel.setText("00:00.00");
         totalTimeLabel.setText("00:00.00");
@@ -256,6 +267,16 @@ public class LyricPlayer extends javax.swing.JFrame{
 
     private void seek(){
         player.seek(Duration.millis(timeLineSlider.getValue()));
+        // for synchronization
+        timer.stop();
+        player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue){
+                observable.removeListener(this);
+                timer.start();
+            }
+        });
     }
 
     /**
