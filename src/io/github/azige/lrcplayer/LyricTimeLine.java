@@ -17,6 +17,7 @@ package io.github.azige.lrcplayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,7 +31,9 @@ public class LyricTimeLine{
     private final List<LyricEvent> events;
 
     public LyricTimeLine(Lyric lrc){
-        this.events = Collections.unmodifiableList(new ArrayList<>(lrc.getEvents()));
+        List<LyricEvent> list = new LinkedList<>(lrc.getEvents());
+        list.add(0, new LyricEvent(LyricTimeStamp.fromMillis(0), ""));
+        this.events = Collections.unmodifiableList(list);
     }
 
     public long getTime(){
