@@ -34,6 +34,7 @@ import io.github.azige.lrcplayer.Lyric.LyricMetaType;
 import io.github.azige.lrcplayer.LyricEvent;
 import io.github.azige.lrcplayer.LyricTimeStamp;
 import io.github.azige.lrcplayer.LyricWriter;
+import io.github.azige.lrcplayer.res.Strings;
 
 /**
  *
@@ -87,35 +88,35 @@ public class LyricEditorPanel extends javax.swing.JPanel{
         });
         jScrollPane1.setViewportView(lyricList);
 
-        rawLyricButton.setText("Raw Lyric");
+        rawLyricButton.setText(Strings.getText("raw_lyric")); // NOI18N
         rawLyricButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rawLyricButtonActionPerformed(evt);
             }
         });
 
-        tagButton.setText("Tag");
+        tagButton.setText(Strings.getText("tag")); // NOI18N
         tagButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tagButtonActionPerformed(evt);
             }
         });
 
-        metaInfoButton.setText("Meta Info");
+        metaInfoButton.setText(Strings.getText("meta_info")); // NOI18N
         metaInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 metaInfoButtonActionPerformed(evt);
             }
         });
 
-        saveButton.setText("Save");
+        saveButton.setText(Strings.getText("save")); // NOI18N
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
             }
         });
 
-        helpButton.setText("Help");
+        helpButton.setText(Strings.getText("help")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -191,13 +192,13 @@ public class LyricEditorPanel extends javax.swing.JPanel{
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if (lyricPlayer.lrcFile.exists() && JOptionPane.showConfirmDialog(
-            this, "Confirm to override existed file?",
-            "Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
+            this, Strings.getText("confirm_message"),
+            Strings.getText("confirm_title"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION){
             return;
         }
         convertListModelToLyric();
-        lyricPlayer.lrc.setMeta(LyricMetaType.EDITOR, "io.github.azige.lrcplayer");
-        lyricPlayer.lrc.setMeta(LyricMetaType.VERSION, "0.1");
+        lyricPlayer.lrc.setMeta(LyricMetaType.EDITOR, Strings.getText("editor_name"));
+        lyricPlayer.lrc.setMeta(LyricMetaType.VERSION, Strings.getText("editor_version"));
         try{
             LyricWriter out = new LyricWriter(new OutputStreamWriter(new FileOutputStream(lyricPlayer.lrcFile), lyricPlayer.charset));
             out.writeLyric(lyricPlayer.lrc);

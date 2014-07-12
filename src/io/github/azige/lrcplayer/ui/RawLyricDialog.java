@@ -15,7 +15,7 @@
  */
 package io.github.azige.lrcplayer.ui;
 
-import javax.swing.JOptionPane;
+import io.github.azige.lrcplayer.res.Strings;
 
 /**
  *
@@ -56,9 +56,9 @@ public class RawLyricDialog extends javax.swing.JDialog{
         lyricTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Raw Lyric");
+        setTitle(Strings.getText("raw_lyric")); // NOI18N
 
-        confirmButton.setText("Confirm");
+        confirmButton.setText(Strings.getText("confirm")); // NOI18N
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);

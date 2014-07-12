@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import io.github.azige.lrcplayer.Lyric;
 import io.github.azige.lrcplayer.Lyric.LyricMetaType;
+import io.github.azige.lrcplayer.res.Strings;
 
 /**
  *
@@ -102,60 +103,59 @@ public class LyricMetaInfoDialog extends javax.swing.JDialog{
         confirmButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Meta Info");
+        setTitle(Strings.getText("meta_info")); // NOI18N
         setResizable(false);
 
-        albumCheckBox.setText("Album");
+        albumCheckBox.setText(Strings.getText("meta_album")); // NOI18N
         albumCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        artistCheckBox.setText("Artist");
+        artistCheckBox.setText(Strings.getText("meta_artist")); // NOI18N
         artistCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        byCheckBox.setText("By");
+        byCheckBox.setText(Strings.getText("meta_by")); // NOI18N
         byCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        offsetCheckBox.setText("Offset");
-        offsetCheckBox.setToolTipText("");
+        offsetCheckBox.setText(Strings.getText("meta_offset")); // NOI18N
         offsetCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        titleCheckBox.setText("Title");
+        titleCheckBox.setText(Strings.getText("meta_title")); // NOI18N
         titleCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        editorCheckBox.setText("Editor");
+        editorCheckBox.setText(Strings.getText("meta_editor")); // NOI18N
         editorCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        versionCheckBox.setText("Version");
+        versionCheckBox.setText(Strings.getText("meta_version")); // NOI18N
         versionCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkBoxActionPerformed(evt);
             }
         });
 
-        confirmButton.setText("Confirm");
+        confirmButton.setText(Strings.getText("confirm")); // NOI18N
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);

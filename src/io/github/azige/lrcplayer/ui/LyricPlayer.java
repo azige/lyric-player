@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -41,6 +42,8 @@ import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import io.github.azige.lrcplayer.res.Strings;
+
 /**
  *
  * @author Azige
@@ -51,7 +54,7 @@ public class LyricPlayer extends javax.swing.JFrame{
     Timer timer;
     File lrcFile;
     Lyric lrc;
-    Charset charset = Charset.forName("GBK");
+    Charset charset = Charset.forName(Strings.getText("charset"));
     private LyricTimeLine timeLine;
     private LyricEvent currentEvent;
     private boolean sliderTrace = true;
@@ -105,10 +108,10 @@ public class LyricPlayer extends javax.swing.JFrame{
         editorRadioButtonMenuItem = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Lyric Player");
+        setTitle(Strings.getText("main_title")); // NOI18N
         setResizable(false);
 
-        stopButton.setText("Stop");
+        stopButton.setText(Strings.getText("stop")); // NOI18N
         stopButton.setEnabled(false);
         stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,7 +133,7 @@ public class LyricPlayer extends javax.swing.JFrame{
 
         totalTimeLabel.setText("00:00.00");
 
-        playToggleButton.setText("Play");
+        playToggleButton.setText(Strings.getText("play")); // NOI18N
         playToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playToggleButtonActionPerformed(evt);
@@ -147,9 +150,9 @@ public class LyricPlayer extends javax.swing.JFrame{
         viewPanel.add(lyricScrollPane);
         viewPanel.add(editorPanel);
 
-        fileMenu.setText("File");
+        fileMenu.setText(Strings.getText("file")); // NOI18N
 
-        openMenuItem.setText("Open");
+        openMenuItem.setText(Strings.getText("open")); // NOI18N
         openMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMenuItemActionPerformed(evt);
@@ -159,10 +162,10 @@ public class LyricPlayer extends javax.swing.JFrame{
 
         jMenuBar1.add(fileMenu);
 
-        viewMenu.setText("View");
+        viewMenu.setText(Strings.getText("view")); // NOI18N
 
         lyricRadioButtonMenuItem.setSelected(true);
-        lyricRadioButtonMenuItem.setText("Real-time Lyric");
+        lyricRadioButtonMenuItem.setText(Strings.getText("real-time_lyric")); // NOI18N
         lyricRadioButtonMenuItem.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 lyricRadioButtonMenuItemItemStateChanged(evt);
@@ -170,7 +173,7 @@ public class LyricPlayer extends javax.swing.JFrame{
         });
         viewMenu.add(lyricRadioButtonMenuItem);
 
-        editorRadioButtonMenuItem.setText("Lyric Editor");
+        editorRadioButtonMenuItem.setText(Strings.getText("lyric_editor")); // NOI18N
         editorRadioButtonMenuItem.setEnabled(false);
         editorRadioButtonMenuItem.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -188,21 +191,20 @@ public class LyricPlayer extends javax.swing.JFrame{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(playToggleButton)
-                .addGap(48, 48, 48)
-                .addComponent(stopButton)
-                .addGap(119, 119, 119))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(timeLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(timeLineSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(playToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(timeLineSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(totalTimeLabel))
-                    .addComponent(viewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(totalTimeLabel)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -216,7 +218,7 @@ public class LyricPlayer extends javax.swing.JFrame{
                     .addComponent(timeLineSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalTimeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stopButton)
                     .addComponent(playToggleButton))
                 .addContainerGap())
@@ -310,7 +312,7 @@ public class LyricPlayer extends javax.swing.JFrame{
             if (lrc != null){
                 timeLine = new LyricTimeLine(lrc);
             }else{
-                lyricTextArea.setText("歌词不可用");
+                lyricTextArea.setText(Strings.getText(Strings.getText("lyric_not_available")));
             }
             timer = new Timer(10, this::timerLisener);
             editorRadioButtonMenuItem.setEnabled(true);

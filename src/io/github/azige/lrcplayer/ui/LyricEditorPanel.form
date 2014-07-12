@@ -66,7 +66,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="rawLyricButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Raw Lyric"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="raw_lyric" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rawLyricButtonActionPerformed"/>
@@ -74,7 +76,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="tagButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tag"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="tag" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tagButtonActionPerformed"/>
@@ -82,7 +86,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="metaInfoButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Meta Info"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="meta_info" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="metaInfoButtonActionPerformed"/>
@@ -90,7 +96,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Save"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="save" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
@@ -98,7 +106,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="helpButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Help"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="help" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>

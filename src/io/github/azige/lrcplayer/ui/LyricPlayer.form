@@ -8,12 +8,16 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="File"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="file" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="open" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openMenuItemActionPerformed"/>
@@ -23,13 +27,17 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="viewMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="View"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="view" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+            </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="lyricRadioButtonMenuItem">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Real-time Lyric"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="real-time_lyric" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="lyricRadioButtonMenuItemItemStateChanged"/>
@@ -37,7 +45,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="editorRadioButtonMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lyric Editor"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="lyric_editor" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -51,7 +61,9 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Lyric Player"/>
+    <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+      <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="main_title" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+    </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -74,24 +86,24 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="playToggleButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-              <Component id="stopButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="viewPanel" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="timeLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="timeLineSlider" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="playToggleButton" min="-2" pref="100" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="stopButton" min="-2" pref="100" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="timeLineSlider" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="totalTimeLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="viewPanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -109,9 +121,9 @@
                   <Component id="totalTimeLabel" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="stopButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="playToggleButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="playToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -121,7 +133,9 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="stopButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Stop"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="stop" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -149,7 +163,9 @@
     </Component>
     <Component class="javax.swing.JToggleButton" name="playToggleButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Play"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="play" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playToggleButtonActionPerformed"/>
