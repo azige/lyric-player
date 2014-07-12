@@ -15,9 +15,9 @@
  */
 package io.github.azige.lrcplayer.ui;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Scanner;
@@ -199,7 +199,7 @@ public class LyricEditorPanel extends javax.swing.JPanel{
         lyricPlayer.lrc.setMeta(LyricMetaType.EDITOR, "io.github.azige.lrcplayer");
         lyricPlayer.lrc.setMeta(LyricMetaType.VERSION, "0.1");
         try{
-            LyricWriter out = new LyricWriter(new FileWriter(lyricPlayer.lrcFile));
+            LyricWriter out = new LyricWriter(new OutputStreamWriter(new FileOutputStream(lyricPlayer.lrcFile), lyricPlayer.charset));
             out.writeLyric(lyricPlayer.lrc);
             out.close();
         }catch (IOException ex){

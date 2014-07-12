@@ -26,15 +26,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
@@ -48,6 +51,7 @@ public class LyricPlayer extends javax.swing.JFrame{
     Timer timer;
     File lrcFile;
     Lyric lrc;
+    Charset charset = Charset.forName("GBK");
     private LyricTimeLine timeLine;
     private LyricEvent currentEvent;
     private boolean sliderTrace = true;
@@ -279,7 +283,12 @@ public class LyricPlayer extends javax.swing.JFrame{
     private boolean openMediaFile(){
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             File mediaFile = fileChooser.getSelectedFile();
+            try{
             player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
+            }catch (MediaException ex){
+                JOptionPane.showMessageDialog(this, ex.getLocalizedMessage());
+                return false;
+            }
             player.setOnReady(() -> {
                 int totalTime = (int)player.getMedia().getDuration().toMillis();
                 totalTimeLabel.setText(LyricTimeStamp.fromMillis(totalTime).toString());
@@ -290,7 +299,7 @@ public class LyricPlayer extends javax.swing.JFrame{
             lrcFile = new File(mediaFile.getParentFile(), mediaFile.getName().replaceAll("\\.[^\\.]*$", "") + ".lrc");
             if (lrcFile.exists()){
                 try{
-                    lrc = new LyricReader(new InputStreamReader(new FileInputStream(lrcFile))).readLyric();
+                    lrc = new LyricReader(new InputStreamReader(new FileInputStream(lrcFile), charset)).readLyric();
                 }catch (Exception ex){
                     lrc = null;
                     throw new RuntimeException(ex);
