@@ -15,6 +15,7 @@
  */
 package io.github.azige.lrcplayer;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -25,6 +26,7 @@ import javax.swing.Timer;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 /**
  *
@@ -37,6 +39,7 @@ public class LyricPlayer extends javax.swing.JFrame{
     private Lyric lrc;
     private LyricTimeLine timeLine;
     private LyricEvent currentEvent;
+    private boolean sliderTrace = true;
     private final JFileChooser fileChooser;
 
     /**
@@ -47,7 +50,7 @@ public class LyricPlayer extends javax.swing.JFrame{
         // To init JavaFX
         new JFXPanel();
         fileChooser = new JFileChooser();
-
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -59,19 +62,21 @@ public class LyricPlayer extends javax.swing.JFrame{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        playButton = new javax.swing.JButton();
+        stopButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lyricTextArea = new javax.swing.JTextArea();
         timeLabel = new javax.swing.JLabel();
         timeLineSlider = new javax.swing.JSlider();
         totalTimeLabel = new javax.swing.JLabel();
+        playToggleButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Lyric Player");
 
-        playButton.setText("Play");
-        playButton.addActionListener(new java.awt.event.ActionListener() {
+        stopButton.setText("Stop");
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playButtonActionPerformed(evt);
+                stopButtonActionPerformed(evt);
             }
         });
 
@@ -84,17 +89,34 @@ public class LyricPlayer extends javax.swing.JFrame{
         timeLabel.setText("00:00.00");
 
         timeLineSlider.setEnabled(false);
+        timeLineSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                timeLineSliderMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                timeLineSliderMouseReleased(evt);
+            }
+        });
 
         totalTimeLabel.setText("00:00.00");
+
+        playToggleButton.setText("Play");
+        playToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playToggleButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(172, Short.MAX_VALUE)
-                .addComponent(playButton)
-                .addGap(171, 171, 171))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(playToggleButton)
+                .addGap(48, 48, 48)
+                .addComponent(stopButton)
+                .addGap(119, 119, 119))
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1)
@@ -103,7 +125,7 @@ public class LyricPlayer extends javax.swing.JFrame{
                 .addContainerGap()
                 .addComponent(timeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timeLineSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(timeLineSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(totalTimeLabel)
                 .addContainerGap())
@@ -119,50 +141,47 @@ public class LyricPlayer extends javax.swing.JFrame{
                     .addComponent(timeLineSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalTimeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(playButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(stopButton)
+                    .addComponent(playToggleButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        if (player == null){
-            openMediaFile();
-            player.play();
-            int totalTime = (int)player.getTotalDuration().toMillis();
-            totalTimeLabel.setText(LyricTimeStamp.fromMillis(totalTime).toString());
-            timeLineSlider.setMaximum(totalTime);
-            if (lrc != null){
-                timeLine = new LyricTimeLine(lrc);
-                timer = new Timer(10, e -> {
-                    int time = (int)player.getCurrentTime().toMillis();
-                    timeLine.setTime(time);
-                    timeLineSlider.setValue(time);
-                    timeLabel.setText(LyricTimeStamp.fromMillis(time).toString());
-                    if (currentEvent != timeLine.getCurrentEvent()){
-                        currentEvent = timeLine.getCurrentEvent();
-                        lyricTextArea.setText(currentEvent.getLyric());
-                    }
-                });
-                timer.start();
+    private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
+        stop();
+    }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void timeLineSliderMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timeLineSliderMousePressed
+        sliderTrace = false;
+    }//GEN-LAST:event_timeLineSliderMousePressed
+
+    private void timeLineSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timeLineSliderMouseReleased
+        seek();
+        refreshView(null);
+        sliderTrace = true;
+    }//GEN-LAST:event_timeLineSliderMouseReleased
+
+    private void playToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playToggleButtonActionPerformed
+        if (playToggleButton.isSelected()){
+            if (player == null){
+                openMediaFile();
+                play();
             }else{
-                lyricTextArea.setText("歌词不可用");
+                resume();
             }
         }else{
-            if (timer != null){
-                timer.stop();
-            }
-            player.stop();
-            player = null;
-            lyricTextArea.setText("");
+            pause();
         }
-    }//GEN-LAST:event_playButtonActionPerformed
+    }//GEN-LAST:event_playToggleButtonActionPerformed
 
     private void openMediaFile(){
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             File mediaFile = fileChooser.getSelectedFile();
             player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
+            player.setOnStopped(this::stop);
             File lrcFile = new File(mediaFile.getParentFile(), mediaFile.getName().replaceAll("\\.[^\\.]*$", "") + ".lrc");
             if (lrcFile.exists()){
                 try{
@@ -174,7 +193,59 @@ public class LyricPlayer extends javax.swing.JFrame{
             }else{
                 lrc = null;
             }
+            if (lrc != null){
+                timeLine = new LyricTimeLine(lrc);
+            }else{
+                lyricTextArea.setText("歌词不可用");
+            }
         }
+    }
+
+    private void play(){
+        player.play();
+        int totalTime = (int)player.getMedia().getDuration().toMillis();
+        totalTimeLabel.setText(LyricTimeStamp.fromMillis(totalTime).toString());
+        timeLineSlider.setMaximum(totalTime);
+        timeLineSlider.setEnabled(true);
+        timer = new Timer(10, this::refreshView);
+        timer.start();
+    }
+
+    private void refreshView(ActionEvent e){
+        int time = (int)player.getCurrentTime().toMillis();
+        timeLine.setTime(time);
+        if (sliderTrace == true){
+            timeLineSlider.setValue(time);
+        }
+        timeLabel.setText(LyricTimeStamp.fromMillis(time).toString());
+        if (currentEvent != timeLine.getCurrentEvent()){
+            currentEvent = timeLine.getCurrentEvent();
+            lyricTextArea.setText(currentEvent.getLyric());
+        }
+    }
+
+    private void pause(){
+        player.pause();
+        timer.stop();
+    }
+
+    private void resume(){
+        player.play();
+        timer.start();
+    }
+
+    private void stop(){
+        player.stop();
+        player = null;
+        timer.stop();
+        lyricTextArea.setText("");
+        timeLineSlider.setMaximum(2);
+        timeLineSlider.setValue(1);
+        timeLineSlider.setEnabled(false);
+    }
+
+    private void seek(){
+        player.seek(Duration.millis(timeLineSlider.getValue()));
     }
 
     /**
@@ -215,7 +286,8 @@ public class LyricPlayer extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea lyricTextArea;
-    private javax.swing.JButton playButton;
+    private javax.swing.JToggleButton playToggleButton;
+    private javax.swing.JButton stopButton;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JSlider timeLineSlider;
     private javax.swing.JLabel totalTimeLabel;

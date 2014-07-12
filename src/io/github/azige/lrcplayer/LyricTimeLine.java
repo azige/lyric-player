@@ -48,7 +48,7 @@ public class LyricTimeLine{
             }
         }else if (currentEventIndex > 0 && events.get(currentEventIndex - 1).getTimeStamp().getMillis() > time){
             while (currentEventIndex > 0
-                && events.get(--currentEventIndex).getTimeStamp().getMillis() < time){
+                && events.get(--currentEventIndex).getTimeStamp().getMillis() > time){
                 // do nothing
             }
         }
