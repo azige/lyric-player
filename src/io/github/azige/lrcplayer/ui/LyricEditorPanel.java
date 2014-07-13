@@ -117,6 +117,11 @@ public class LyricEditorPanel extends javax.swing.JPanel{
         });
 
         helpButton.setText(Strings.getText("help")); // NOI18N
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -208,6 +213,10 @@ public class LyricEditorPanel extends javax.swing.JPanel{
             LOG.log(Level.WARNING, ex.getLocalizedMessage(), ex);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+       JOptionPane.showMessageDialog(null, Strings.getText("toturial"));
+    }//GEN-LAST:event_helpButtonActionPerformed
 
     private void rawLyricCallback(String rawLyric){
         LyricTimeStamp zero = LyricTimeStamp.fromMillis(0);

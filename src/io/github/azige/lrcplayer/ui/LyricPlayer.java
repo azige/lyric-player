@@ -26,8 +26,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.nio.charset.Charset;
-import java.util.Locale;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -218,9 +222,10 @@ public class LyricPlayer extends javax.swing.JFrame{
                     .addComponent(timeLineSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalTimeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(stopButton)
-                    .addComponent(playToggleButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(playToggleButton)))
                 .addContainerGap())
         );
 
@@ -286,7 +291,7 @@ public class LyricPlayer extends javax.swing.JFrame{
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
             File mediaFile = fileChooser.getSelectedFile();
             try{
-            player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
+                player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
             }catch (MediaException ex){
                 JOptionPane.showMessageDialog(this, ex.getLocalizedMessage());
                 return false;
@@ -312,7 +317,7 @@ public class LyricPlayer extends javax.swing.JFrame{
             if (lrc != null){
                 timeLine = new LyricTimeLine(lrc);
             }else{
-                lyricTextArea.setText(Strings.getText(Strings.getText("lyric_not_available")));
+                lyricTextArea.setText(Strings.getText("lyric_not_available"));
             }
             timer = new Timer(10, this::timerLisener);
             editorRadioButtonMenuItem.setEnabled(true);
@@ -348,6 +353,7 @@ public class LyricPlayer extends javax.swing.JFrame{
 
     private void pause(){
         player.pause();
+        timer.stop();
     }
 
     private void stop(){
@@ -385,15 +391,17 @@ public class LyricPlayer extends javax.swing.JFrame{
     private void seek(){
         player.seek(Duration.millis(timeLineSlider.getValue()));
         // for synchronization
-        timer.stop();
-        player.currentTimeProperty().addListener(new ChangeListener<Duration>(){
+        if (timer.isRunning()){
+            timer.stop();
+            player.currentTimeProperty().addListener(new ChangeListener<Duration>(){
 
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue){
-                observable.removeListener(this);
-                timer.start();
-            }
-        });
+                @Override
+                public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue){
+                    observable.removeListener(this);
+                    timer.start();
+                }
+            });
+        }
     }
 
     /**
@@ -422,6 +430,21 @@ public class LyricPlayer extends javax.swing.JFrame{
             java.util.logging.Logger.getLogger(LyricPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
+        final Logger logger = Logger.getLogger("io.github.azige.lrcplayer");
+
+        Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        });
+
+        try{
+            FileHandler fileHandler = new FileHandler("lyric-player.log", true);
+            fileHandler.setFormatter(new SimpleFormatter());
+            Logger rootLogger = Logger.getLogger("");
+            rootLogger.addHandler(fileHandler);
+        }catch (IOException ex){
+            JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable(){

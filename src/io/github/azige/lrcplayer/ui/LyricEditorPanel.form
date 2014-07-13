@@ -110,6 +110,9 @@
           <ResourceString bundle="io/github/azige/lrcplayer/res/Text.properties" key="help" replaceFormat="Strings.getText(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
